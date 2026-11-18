@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --c-surface: 255 248 245;
+  --c-surface-lowest: 255 255 255;
+  --c-surface-low: 255 241 233;
+  --c-surface-container: 253 234 223;
+  --c-surface-high: 247 226 214;
+  --c-surface-highest: 240 217 204;
+  --c-on-surface: 36 25 17;
+  --c-on-surface-variant: 87 66 55;
+  --c-outline: 140 113 99;
+  --c-outline-variant: 224 192 177;
+  --c-primary: 194 80 0;
+  --c-secondary: 38 65 145;
+  --c-secondary-container: 220 225 255;
+  --c-tertiary: 0 120 50;
+  --c-danger: 186 26 26;
+}
+.dark {
+  --c-surface: 11 19 38;
+  --c-surface-lowest: 6 14 32;
+  --c-surface-low: 19 27 46;
+  --c-surface-container: 23 31 51;
+  --c-surface-high: 34 42 61;
+  --c-surface-highest: 45 52 73;
+  --c-on-surface: 218 226 253;
+  --c-on-surface-variant: 224 192 177;
+  --c-outline: 167 139 125;
+  --c-outline-variant: 88 66 55;
+  --c-primary: 255 182 144;
+  --c-secondary: 182 196 255;
+  --c-secondary-container: 38 65 145;
+  --c-tertiary: 98 223 125;
+  --c-danger: 255 180 171;
+}
+
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  background: rgb(var(--c-surface));
+  color: rgb(var(--c-on-surface));
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+}
+.icon-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+.pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+@keyframes shimmer { 0% { opacity: .5 } 50% { opacity: 1 } 100% { opacity: .5 } }
+.skeleton { background: rgb(var(--c-surface-high)); border-radius: 1rem; animation: shimmer 1.4s ease-in-out infinite; }
+
+@keyframes loadbar { from { transform: translateX(-100%) } to { transform: translateX(250%) } }
+.loadbar { animation: loadbar 1.2s ease-in-out infinite; }
