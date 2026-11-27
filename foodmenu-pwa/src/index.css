@@ -3,38 +3,38 @@
 @tailwind utilities;
 
 :root {
-  --c-surface: 255 248 245;
+  --c-surface: 249 250 251;
   --c-surface-lowest: 255 255 255;
-  --c-surface-low: 255 241 233;
-  --c-surface-container: 253 234 223;
-  --c-surface-high: 247 226 214;
-  --c-surface-highest: 240 217 204;
-  --c-on-surface: 36 25 17;
-  --c-on-surface-variant: 87 66 55;
-  --c-outline: 140 113 99;
-  --c-outline-variant: 224 192 177;
-  --c-primary: 194 80 0;
-  --c-secondary: 38 65 145;
-  --c-secondary-container: 220 225 255;
-  --c-tertiary: 0 120 50;
-  --c-danger: 186 26 26;
+  --c-surface-low: 255 255 255;
+  --c-surface-container: 243 244 246;
+  --c-surface-high: 229 231 235;
+  --c-surface-highest: 209 213 219;
+  --c-on-surface: 17 24 39;
+  --c-on-surface-variant: 107 114 128;
+  --c-outline: 156 163 175;
+  --c-outline-variant: 229 231 235;
+  --c-primary: 234 88 12;
+  --c-secondary: 55 65 81;
+  --c-secondary-container: 243 244 246;
+  --c-tertiary: 22 163 74;
+  --c-danger: 220 38 38;
 }
 .dark {
-  --c-surface: 11 19 38;
-  --c-surface-lowest: 6 14 32;
-  --c-surface-low: 19 27 46;
-  --c-surface-container: 23 31 51;
-  --c-surface-high: 34 42 61;
-  --c-surface-highest: 45 52 73;
-  --c-on-surface: 218 226 253;
-  --c-on-surface-variant: 224 192 177;
-  --c-outline: 167 139 125;
-  --c-outline-variant: 88 66 55;
-  --c-primary: 255 182 144;
-  --c-secondary: 182 196 255;
-  --c-secondary-container: 38 65 145;
-  --c-tertiary: 98 223 125;
-  --c-danger: 255 180 171;
+  --c-surface: 9 9 11;
+  --c-surface-lowest: 24 24 27;
+  --c-surface-low: 24 24 27;
+  --c-surface-container: 39 39 42;
+  --c-surface-high: 63 63 70;
+  --c-surface-highest: 82 82 91;
+  --c-on-surface: 244 244 245;
+  --c-on-surface-variant: 161 161 170;
+  --c-outline: 113 113 122;
+  --c-outline-variant: 39 39 42;
+  --c-primary: 249 115 22;
+  --c-secondary: 212 212 216;
+  --c-secondary-container: 39 39 42;
+  --c-tertiary: 74 222 128;
+  --c-danger: 248 113 113;
 }
 
 html, body, #root { min-height: 100%; }

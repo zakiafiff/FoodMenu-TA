@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import {
-  ArrowLeft, ChevronRight, Clock, Compass, CloudOff, Download, Flame, Heart, Home, MapPin, MessageSquare,
-  Moon, Search, SearchX, SlidersHorizontal, Star, Store, Sun, Tag, ThumbsUp, User, Utensils,
+  ArrowLeft, CheckCircle, ChevronRight, Clock, Compass, CloudOff, Download, Flame, Heart, Home, MapPin, MessageSquare,
+  Minus, Moon, Plus, Search, SearchX, ShoppingBag, SlidersHorizontal, Star, Store, Sun, Tag, ThumbsUp, User, Utensils,
   UtensilsCrossed, WifiOff, X, Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const ICONS = {
-  arrow_back: ArrowLeft, bolt: Zap, chevron_right: ChevronRight, close: X, cloud_off: CloudOff,
-  dark_mode: Moon, explore_off: Compass, favorite: Heart, home: Home, install_mobile: Download,
+  add: Plus, arrow_back: ArrowLeft, bolt: Zap, check_circle: CheckCircle, chevron_right: ChevronRight, close: X,
+  cloud_off: CloudOff, dark_mode: Moon, explore_off: Compass, favorite: Heart, home: Home, install_mobile: Download,
   light_mode: Sun, local_fire_department: Flame, local_offer: Tag, location_on: MapPin, person: User,
-  pin_drop: MapPin, rate_review: MessageSquare, restaurant: Utensils, restaurant_menu: UtensilsCrossed,
-  schedule: Clock, search: Search, search_off: SearchX, star: Star, storefront: Store,
+  pin_drop: MapPin, rate_review: MessageSquare, remove: Minus, restaurant: Utensils, restaurant_menu: UtensilsCrossed,
+  schedule: Clock, search: Search, search_off: SearchX, shopping_bag: ShoppingBag, star: Star, storefront: Store,
   thumb_up: ThumbsUp, tune: SlidersHorizontal, wifi_off: WifiOff,
 };
 
@@ -55,13 +55,15 @@ export function StatusBadge({ ok, okText = 'Tersedia', noText = 'Habis', classNa
 
 export function Chips({ items, value, onChange }) {
   return (
-    <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-1">
+    <div className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 py-0.5">
       {items.map((it) => {
         const active = String(value) === String(it.value);
         return (
           <button key={it.value} onClick={() => onChange(it.value)}
-            className={`min-h-[40px] shrink-0 rounded-full px-4 text-xs font-bold transition active:scale-95 ${
-              active ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant'}`}>
+            className={`min-h-[36px] shrink-0 rounded-full px-3.5 text-xs font-semibold transition active:scale-95 ${
+              active
+                ? 'bg-primary-container text-on-primary-container shadow-sm'
+                : 'border border-outline-variant/60 bg-surface-lowest text-on-surface-variant hover:bg-surface-container dark:bg-surface-low'}`}>
             {it.label}
           </button>
         );
@@ -72,14 +74,14 @@ export function Chips({ items, value, onChange }) {
 
 export function SearchBar({ value, onChange, placeholder }) {
   return (
-    <div className="flex h-12 flex-1 items-center rounded-full bg-surface-container px-4 focus-within:ring-2 focus-within:ring-primary-container/60">
-      <Icon name="search" className="text-[20px] text-primary" />
+    <div className="flex h-11 flex-1 items-center rounded-xl border border-outline-variant/70 bg-surface-lowest px-3.5 transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15 dark:bg-surface-low">
+      <Icon name="search" className="text-[18px] text-outline" />
       <input type="search" value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
         aria-label={placeholder}
-        className="w-full bg-transparent px-3 text-sm text-on-surface outline-none placeholder:text-outline" />
+        className="w-full bg-transparent px-2.5 text-sm text-on-surface outline-none placeholder:text-outline" />
       {value && (
-        <button onClick={() => onChange('')} aria-label="Hapus pencarian" className="text-outline">
-          <Icon name="close" className="text-[18px]" />
+        <button onClick={() => onChange('')} aria-label="Hapus pencarian" className="text-outline hover:text-on-surface">
+          <Icon name="close" className="text-[16px]" />
         </button>
       )}
     </div>

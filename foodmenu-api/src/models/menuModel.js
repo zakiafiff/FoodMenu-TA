@@ -65,11 +65,32 @@ const adjustStock = async (id, { amount, stock }) => {
   if (next === undefined) {
     const current = await getById(id);
     if (!current) return null;
-    next = Number(current.stock) + Number(amount);
+    next = Number(current.stock ?? 0) + Number(amount);
   }
   next = Math.max(0, Math.floor(Number(next)));
   if (Number.isNaN(next)) throw new Error('amount / stock harus berupa angka');
-  return update(id, { stock: next });
+  return update(id, { stock: next, is_available: next > 0 });
+};
+
+// Proses pembelian menu: kurangi stok sesuai quantity, tolak jika habis atau kurang
+const purchase = async (id, quantity = 1) => {
+  const qty = Math.floor(Number(quantity));
+  if (!Number.isFinite(qty) || qty < 1) {
+    throw new Error('Jumlah pembelian minimal 1');
+  }
+  const current = await getById(id);
+  if (!current) return null;
+
+  const currentStock = Number(current.stock ?? 0);
+  if (!current.is_available || currentStock <= 0) {
+    throw new Error('Stok habis, menu tidak dapat dibeli');
+  }
+  if (currentStock < qty) {
+    throw new Error(`Stok tidak mencukupi (tersisa ${currentStock})`);
+  }
+
+  const next = currentStock - qty;
+  return update(id, { stock: next, is_available: next > 0 });
 };
 
 const remove = async (id) => {
@@ -78,4 +99,4 @@ const remove = async (id) => {
   return data.length > 0;
 };
 
-module.exports = { getAll, getById, getByIds, create, update, adjustStock, remove };
+module.exports = { getAll, getById, getByIds, create, update, adjustStock, purchase, remove };

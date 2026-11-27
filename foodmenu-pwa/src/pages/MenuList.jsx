@@ -6,9 +6,9 @@ import useFetch from '../hooks/useFetch';
 import { getCategories, getMenus } from '../services/api';
 
 const SORTS = [
-  { value: 'terpopuler', label: '🔥 Terpopuler' },
-  { value: 'termurah', label: '💸 Termurah' },
-  { value: 'rating', label: '⭐ Rating Tertinggi' },
+  { value: 'terpopuler', label: 'Terpopuler' },
+  { value: 'termurah', label: 'Termurah' },
+  { value: 'rating', label: 'Rating Tertinggi' },
 ];
 
 const SORTERS = {
@@ -47,23 +47,30 @@ export default function MenuList() {
   const catItems = [{ value: '', label: 'Semua' }, ...(cats.data || []).map((c) => ({ value: c.id, label: c.name }))];
 
   return (
-    <div className="space-y-3">
-      <div className="px-4">
-        <h1 className="font-display text-2xl font-bold">Daftar Menu</h1>
-        <p className="text-sm text-on-surface-variant">{menus.data ? `${shown.length} menu ditemukan` : 'Memuat menu...'}</p>
+    <div className="space-y-3.5 pt-2">
+      <div className="flex flex-col gap-3 px-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="font-display text-2xl font-bold tracking-tight">Daftar Menu</h1>
+          <p className="text-xs text-on-surface-variant">{menus.data ? `${shown.length} menu tersedia` : 'Memuat menu...'}</p>
+        </div>
+        <div className="flex flex-1 gap-2 md:max-w-lg">
+          <SearchBar value={search} onChange={setSearch} placeholder="Cari menu atau deskripsi..." />
+          <select value={sort} onChange={(e) => setParam('sort', e.target.value === 'terpopuler' ? '' : e.target.value)}
+            aria-label="Urutkan menu"
+            className="h-11 shrink-0 rounded-xl border border-outline-variant/70 bg-surface-lowest px-3 text-xs font-semibold text-on-surface outline-none focus:border-primary dark:bg-surface-low">
+            {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+          </select>
+        </div>
       </div>
-      <div className="px-4 md:max-w-xl">
-        <SearchBar value={search} onChange={setSearch} placeholder="Cari menu atau deskripsi..." />
-      </div>
-      <Chips items={SORTS} value={sort} onChange={(v) => setParam('sort', v === 'terpopuler' ? '' : v)} />
+
       <Chips items={catItems} value={category} onChange={(v) => setParam('category', v)} />
 
-      {menus.loading ? <SkeletonList count={5} />
+      {menus.loading ? <SkeletonList count={6} />
         : menus.error ? <ErrorState onRetry={menus.reload} />
         : shown.length === 0 ? (
           <EmptyState title="Menu tidak ditemukan" text="Coba kata kunci atau kategori lain." />
         ) : (
-          <div className="grid gap-3 px-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-3 px-4 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((m) => <MenuRow key={m.id} menu={m} />)}
           </div>
         )}

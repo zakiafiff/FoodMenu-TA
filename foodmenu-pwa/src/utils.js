@@ -10,3 +10,4 @@ export const stockText = (m) => {
   if (m.stock === undefined || m.stock === null) return 'Tersedia';
   return Number(m.stock) <= 3 ? `Sisa ${m.stock}` : `Stok ${m.stock}`;
 };
+

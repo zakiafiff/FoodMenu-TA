@@ -24,38 +24,41 @@ export default function Home() {
 
   return (
     <div className="space-y-5">
-      <section className="flex items-start justify-between px-4">
+      <section className="flex flex-col gap-3 px-4 pt-2 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="font-display text-[26px] font-bold leading-8">Halo, Mahasiswa Teknik! 👋</h1>
-          <p className="text-sm text-on-surface-variant">Mau makan apa hari ini di Kantin FT?</p>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-primary">Kantin Fakultas Teknik</p>
+          <h1 className="mt-0.5 font-display text-2xl font-bold tracking-tight">Mau makan apa hari ini?</h1>
         </div>
+        <form onSubmit={submit} className="flex w-full gap-2 md:max-w-md">
+          <SearchBar value={q} onChange={setQ} placeholder="Cari nasi geprek, soto, es teh..." />
+          <Link to="/menu" aria-label="Filter menu"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-outline-variant/70 bg-surface-lowest text-on-surface transition hover:bg-surface-container active:scale-95 dark:bg-surface-low">
+            <Icon name="tune" className="text-[18px]" />
+          </Link>
+        </form>
       </section>
-
-      <form onSubmit={submit} className="flex gap-2 px-4 md:max-w-2xl">
-        <SearchBar value={q} onChange={setQ} placeholder="Cari nasi geprek, soto, es teh..." />
-        <Link to="/menu" aria-label="Filter menu"
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-container text-on-primary-container shadow-md active:scale-95">
-          <Icon name="tune" />
-        </Link>
-      </form>
 
       <Chips items={chipItems} value="" onChange={(v) => navigate(v ? `/menu?category=${v}` : '/menu')} />
 
       <section className="px-4">
         <Link to={paketId ? `/menu?category=${paketId}` : '/menu'}
-          className="block rounded-2xl bg-gradient-to-r from-[#264191] via-surface-high to-surface-container p-4 shadow-lg md:p-8">
-          <span className="inline-flex items-center gap-1 rounded-full bg-primary-container/20 px-2.5 py-0.5 text-[11px] font-bold text-primary">
-            <Icon name="local_offer" className="text-[13px]" /> Kupon Khusus Anak Teknik
-          </span>
-          <h2 className="mt-2 font-display text-[22px] font-bold leading-7 text-white">🔥 Paket Hemat Mahasiswa</h2>
-          <p className="mt-0.5 text-sm text-white/75">Makan kenyang & hemat mulai Rp10.000 di Dapur Mahasiswa.</p>
-          <span className="mt-3 inline-flex min-h-[44px] items-center rounded-full bg-primary-container px-5 text-sm font-bold text-on-primary-container">
-            Lihat Paket Hemat
+          className="group flex flex-col justify-between gap-3 rounded-2xl bg-zinc-900 px-5 py-4 text-white transition hover:bg-zinc-800 dark:border dark:border-zinc-800 md:flex-row md:items-center md:px-6 md:py-5">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="rounded bg-primary-container px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                Hemat
+              </span>
+              <span className="text-xs text-zinc-400">Khusus Mahasiswa Teknik</span>
+            </div>
+            <h2 className="font-display text-lg font-bold tracking-tight md:text-xl">Paket Hemat Mulai Rp10.000</h2>
+          </div>
+          <span className="inline-flex h-10 w-fit shrink-0 items-center gap-1.5 rounded-xl bg-primary-container px-4 text-xs font-bold text-white transition group-hover:brightness-110">
+            Lihat Paket <Icon name="chevron_right" className="text-[16px]" />
           </span>
         </Link>
       </section>
 
-      <section className="space-y-3">
+      <section className="space-y-2.5">
         <SectionTitle icon="star" title="Menu Favorit" to="/menu" />
         {popular.loading ? <SkeletonList count={1} /> : (
           <div className="no-scrollbar flex gap-3 overflow-x-auto px-4 pb-1 lg:grid lg:grid-cols-4 lg:overflow-visible">
@@ -64,10 +67,10 @@ export default function Home() {
         )}
       </section>
 
-      <section className="space-y-3">
+      <section className="space-y-2.5">
         <SectionTitle icon="thumb_up" title="Rekomendasi Hari Ini" to="/menu" />
         {reco.loading ? <SkeletonList count={3} /> : (
-          <div className="grid gap-3 px-4 md:grid-cols-2">
+          <div className="grid gap-3 px-4 md:grid-cols-2 lg:grid-cols-3">
             {(reco.data || []).map((m) => <MenuRow key={m.id} menu={m} />)}
           </div>
         )}

@@ -28,6 +28,8 @@ export const getMenus = (params) => cachedGet('/menus', clean(params));
 export const getMenu = (id) => cachedGet(`/menus/${id}`);
 export const getKiosList = (params) => cachedGet('/kios', clean(params));
 export const getKios = (id) => cachedGet(`/kios/${id}`);
+export const buyMenu = (id, quantity = 1) =>
+  http.post(`/menus/${id}/buy`, { quantity }).then((r) => r.data.data);
 
 // Favorit: disinkronkan ke API secara "best effort" (aplikasi tetap jalan saat offline)
 export const syncAddFavorite = (deviceId, menuId) =>

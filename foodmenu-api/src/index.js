@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
       'GET /api/kios/:id',
       'GET /api/menus?search=&category_id=&kios_id=&sort=terpopuler|termurah|rating&popular=true&limit=',
       'GET /api/menus/:id',
+      'PATCH /api/menus/:id/stock',
+      'POST /api/menus/:id/buy',
       'GET /api/favorites?device_id=',
       'POST /api/favorites',
       'DELETE /api/favorites/:menuId?device_id=',

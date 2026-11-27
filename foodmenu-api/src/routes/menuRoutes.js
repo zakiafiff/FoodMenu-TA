@@ -6,6 +6,7 @@ router.get('/:id', Menu.getById);
 router.post('/', Menu.create);
 router.put('/:id', Menu.update);
 router.patch('/:id/stock', Menu.updateStock);
+router.post('/:id/buy', Menu.buy);
 router.delete('/:id', Menu.remove);
 
 module.exports = router;

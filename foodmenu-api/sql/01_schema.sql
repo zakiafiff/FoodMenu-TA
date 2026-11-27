@@ -42,6 +42,7 @@ create table menus (
   is_popular boolean default false,
   tags text[] default '{}',
   prep_time text,
+  stock int default null,
   created_at timestamptz default now()
 );
 

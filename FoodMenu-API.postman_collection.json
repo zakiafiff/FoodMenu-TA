@@ -1,0 +1,296 @@
+{
+  "info": {
+    "name": "FoodMenu API",
+    "_postman_id": "foodmenu-api-v2",
+    "description": "Koleksi endpoint FoodMenu API termasuk CRUD menu dan manajemen stok",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000/api" },
+    { "key": "menu_id",  "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "GET semua kategori",
+          "request": { "method": "GET", "url": "{{base_url}}/categories" }
+        }
+      ]
+    },
+    {
+      "name": "Kios",
+      "item": [
+        {
+          "name": "GET semua kios",
+          "request": { "method": "GET", "url": "{{base_url}}/kios" }
+        },
+        {
+          "name": "GET kios by ID",
+          "request": { "method": "GET", "url": "{{base_url}}/kios/1" }
+        }
+      ]
+    },
+    {
+      "name": "Menu - CRUD",
+      "item": [
+        {
+          "name": "GET semua menu",
+          "request": { "method": "GET", "url": "{{base_url}}/menus" }
+        },
+        {
+          "name": "GET menu populer (limit 5)",
+          "request": { "method": "GET", "url": "{{base_url}}/menus?popular=true&limit=5" }
+        },
+        {
+          "name": "GET menu by ID",
+          "request": { "method": "GET", "url": "{{base_url}}/menus/{{menu_id}}" }
+        },
+        {
+          "name": "POST buat menu baru",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/menus",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kios_id\": 1,\n  \"category_id\": 1,\n  \"name\": \"Menu Tes Stok\",\n  \"description\": \"Menu untuk tes fitur stok\",\n  \"price\": 10000,\n  \"is_available\": true,\n  \"stock\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT update menu",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/menus/{{menu_id}}",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Menu Diperbarui\",\n  \"price\": 12000,\n  \"is_available\": true,\n  \"stock\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE hapus menu",
+          "request": { "method": "DELETE", "url": "{{base_url}}/menus/{{menu_id}}" }
+        }
+      ]
+    },
+    {
+      "name": "Menu - Stok",
+      "item": [
+        {
+          "name": "PATCH kurangi stok 1 (amount: -1)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/{{menu_id}}/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"amount\": -1 }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success true', () => pm.expect(pm.response.json().success).to.be.true);",
+                  "pm.test('stock turun', () => pm.expect(pm.response.json().data.stock).to.be.a('number'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH tambah stok 5 (amount: +5)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/{{menu_id}}/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"amount\": 5 }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success true', () => pm.expect(pm.response.json().success).to.be.true);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH set stok 0 → otomatis Habis",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/{{menu_id}}/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"stock\": 0 }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('stock = 0', () => pm.expect(pm.response.json().data.stock).to.equal(0));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH isi ulang stok ke 10",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/{{menu_id}}/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"stock\": 10 }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('stock = 10', () => pm.expect(pm.response.json().data.stock).to.equal(10));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH stok minus → minimal 0 (tidak bisa negatif)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/{{menu_id}}/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"amount\": -9999 }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('stock tidak negatif', () => pm.expect(pm.response.json().data.stock).to.equal(0));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH error: tanpa body → 400",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/{{menu_id}}/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('success false', () => pm.expect(pm.response.json().success).to.be.false);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH error: amount bukan angka → 400",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/{{menu_id}}/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"amount\": \"abc\" }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('success false', () => pm.expect(pm.response.json().success).to.be.false);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH error: menu tidak ada → 404",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/menus/999999/stock",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"amount\": -1 }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404', () => pm.response.to.have.status(404));",
+                  "pm.test('success false', () => pm.expect(pm.response.json().success).to.be.false);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Favorites",
+      "item": [
+        {
+          "name": "GET favorit",
+          "request": { "method": "GET", "url": "{{base_url}}/favorites?device_id=test-device-001" }
+        },
+        {
+          "name": "POST tambah favorit",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/favorites",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"device_id\": \"test-device-001\", \"menu_id\": 1 }"
+            }
+          }
+        },
+        {
+          "name": "DELETE hapus favorit",
+          "request": { "method": "DELETE", "url": "{{base_url}}/favorites/1?device_id=test-device-001" }
+        }
+      ]
+    }
+  ]
+}
