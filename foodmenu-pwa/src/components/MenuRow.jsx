@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { rupiah } from '../utils';
+import { isSoldOut, rupiah, stockText } from '../utils';
 import FavButton from './FavButton';
 import { Icon, Img, StatusBadge } from './ui';
 
 export default function MenuRow({ menu, showKios = true }) {
-  const off = !menu.is_available;
+  const off = isSoldOut(menu);
   return (
     <Link to={`/menu/${menu.id}`}
       className={`relative flex gap-3 rounded-2xl border border-outline-variant/30 bg-surface-low p-3 transition active:scale-[0.99] ${off ? 'opacity-60' : ''}`}>
@@ -21,7 +21,7 @@ export default function MenuRow({ menu, showKios = true }) {
         </div>
         <div className="mt-auto flex items-end justify-between pt-1">
           <span className="font-display text-lg font-extrabold text-primary-container">{rupiah(menu.price)}</span>
-          <StatusBadge ok={!off} />
+          <StatusBadge ok={!off} okText={stockText(menu)} noText="Habis" />
         </div>
       </div>
       <FavButton menu={menu} className="absolute right-1 top-1" />

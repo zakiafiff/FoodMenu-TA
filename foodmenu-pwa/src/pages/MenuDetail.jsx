@@ -6,7 +6,7 @@ import { ErrorState, Icon, Img, StatusBadge } from '../components/ui';
 import { useFavorites } from '../context/FavoritesContext';
 import useFetch from '../hooks/useFetch';
 import { getMenu } from '../services/api';
-import { rupiah } from '../utils';
+import { isSoldOut, rupiah, stockText } from '../utils';
 
 export default function MenuDetail() {
   const { id } = useParams();
@@ -20,19 +20,20 @@ export default function MenuDetail() {
   const fav = isFavorite(menu.id);
   const pedas = menu.tags?.includes('Pedas');
   const kios = menu.kios;
+  const off = isSoldOut(menu);
 
   return (
     <>
       <PageHeader title="Menu Detail" />
       <div className="mx-auto max-w-5xl md:grid md:grid-cols-2 md:gap-8 md:px-8 md:pt-6">
         <div className="relative md:self-start md:overflow-hidden md:rounded-3xl">
-          <Img src={menu.image_url} alt={menu.name} className="h-72 w-full md:h-[30rem]" />
+          <Img src={menu.image_url} alt={menu.name} className={`h-72 w-full md:h-[30rem] ${off ? 'grayscale' : ''}`} />
           <FavButton menu={menu} className="absolute right-4 top-4 bg-surface-lowest/70 backdrop-blur" />
         </div>
 
         <div className="relative -mt-6 space-y-5 rounded-t-3xl bg-surface px-4 pt-6 md:mt-0 md:rounded-none md:px-0 md:pt-0">
           <div className="flex flex-wrap gap-2">
-            <StatusBadge ok={menu.is_available} />
+            <StatusBadge ok={!off} okText={stockText(menu)} noText="Stok Habis" />
             {menu.categories?.name && (
               <span className="rounded-full bg-secondary-container px-2.5 py-0.5 text-[11px] font-bold text-secondary">
                 {menu.categories.name}
@@ -43,7 +44,7 @@ export default function MenuDetail() {
           <div>
             <h2 className="font-display text-3xl font-bold leading-9">{menu.name}</h2>
             <div className="mt-2 flex items-baseline gap-3">
-              <span className="font-display text-4xl font-extrabold text-primary-container">{rupiah(menu.price)}</span>
+              <span className={`font-display text-4xl font-extrabold ${off ? 'text-outline line-through' : 'text-primary-container'}`}>{rupiah(menu.price)}</span>
               {menu.original_price && (
                 <>
                   <s className="text-sm text-outline">{rupiah(menu.original_price)}</s>
@@ -86,7 +87,8 @@ export default function MenuDetail() {
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((n) => (
                   <button key={n} onClick={() => setLevel(n)} aria-pressed={level === n}
-                    className={`min-h-[44px] flex-1 rounded-full text-xs font-bold ${level === n ? 'bg-primary-container text-on-primary-container' : 'bg-surface-high text-on-surface-variant'}`}>
+                    className={`min-h-[44px] flex-1 rounded-full text-xs font-bold ${
+                      level === n ? 'bg-primary-container text-on-primary-container' : 'bg-surface-high text-on-surface-variant'}`}>
                     {n}
                   </button>
                 ))}
@@ -128,7 +130,8 @@ export default function MenuDetail() {
           </Link>
         )}
         <button onClick={() => toggle(menu)}
-          className={`flex min-h-[52px] flex-[1.4] items-center justify-center gap-2 rounded-full text-sm font-bold active:scale-95 ${fav ? 'border-2 border-primary-container text-primary' : 'bg-primary-container text-on-primary-container'}`}>
+          className={`flex min-h-[52px] flex-[1.4] items-center justify-center gap-2 rounded-full text-sm font-bold active:scale-95 ${
+            fav ? 'border-2 border-primary-container text-primary' : 'bg-primary-container text-on-primary-container'}`}>
           <Icon name="favorite" fill={fav} />{fav ? 'Hapus dari Favorit' : 'Tambah ke Favorit'}
         </button>
       </div>

@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
-import { rupiah } from '../utils';
+import { isSoldOut, rupiah, stockText } from '../utils';
 import FavButton from './FavButton';
 import { Icon, Img, StatusBadge } from './ui';
 
 export default function MenuFeatured({ menu }) {
+  const off = isSoldOut(menu);
   return (
     <Link to={`/menu/${menu.id}`}
-      className="block w-64 shrink-0 overflow-hidden lg:w-auto rounded-2xl border border-outline-variant/30 bg-surface-low transition active:scale-[0.98]">
+      className={`block w-64 shrink-0 overflow-hidden rounded-2xl border border-outline-variant/30 bg-surface-low transition active:scale-[0.98] lg:w-auto ${off ? 'opacity-60' : ''}`}>
       <div className="relative">
-        <Img src={menu.image_url} alt={menu.name} className="h-36 w-full" />
-        <StatusBadge ok={menu.is_available} className="absolute left-3 top-3 bg-surface-lowest/80 backdrop-blur" />
+        <Img src={menu.image_url} alt={menu.name} className={`h-36 w-full ${off ? 'grayscale' : ''}`} />
+        <StatusBadge ok={!off} okText={stockText(menu)} noText="Habis" className="absolute left-3 top-3 bg-surface-lowest/80 backdrop-blur" />
         <FavButton menu={menu} className="absolute right-1 top-1 bg-surface-lowest/60 backdrop-blur" />
       </div>
       <div className="p-3">
